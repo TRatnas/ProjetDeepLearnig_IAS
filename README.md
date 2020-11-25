@@ -2,27 +2,25 @@
 <p align="center"><img src="ProjetDL_images/desc.png" /></p>
 
 ## Description
-Open up your pantry and you’re likely to find several wheat products. Indeed, your morning toast or cereal may rely upon this common grain. Its popularity as a food and crop makes wheat widely studied. To get large and accurate data about wheat fields worldwide, plant scientists use image detection of "wheat heads"—spikes atop the plant containing grain. These images are used to estimate the density and size of wheat heads in different varieties. Farmers can use the data to assess health and maturity when making management decisions in their fields.
+The majority of food products are made from wheat. Thanks to its popularity in use, wheat is widely studied in the agricultural field. Specialists are working on detecting an image of wheat ears collected from many wheat fields around the world. Described as spikes at the top of the plant containing the grain, the images of wheat ears are processed to estimate its size and density in different varieties. Farmers will be able to use the data to assess health and maturity when making management decisions in their fields.
 
-However, accurate wheat head detection in outdoor field images can be visually challenging. There is often overlap of dense wheat plants, and the wind can blur the photographs. Both make it difficult to identify single heads. Additionally, appearances vary due to maturity, color, genotype, and head orientation. Finally, because wheat is grown worldwide, different varieties, planting densities, patterns, and field conditions must be considered. Models developed for wheat phenotyping need to generalize between different growing environments. Current detection methods involve one- and two-stage detectors (Yolo-V3 and Faster-RCNN), but even when trained with a large dataset, a bias to the training region remains.
+However, accurately detecting wheat ears in outdoor field images can be visually difficult. There are often overlaps of dense wheat plants and weather such as wind can blur the photographs. Both make it difficult to identify unique heads. Additionally, appearances vary due to maturity, color, genotype, and head orientation. Finally, as wheat is cultivated all over the world, different varieties, planting densities, patterns and field conditions must be taken into account. The models developed for the phenotyping of wheat must be generalized between different growing environments. Current detection methods involve one and two stage detectors (Yolo-V3 and Faster-RCNN), but even when trained with a large dataset, a bias towards the training region remains.
+With improved detection, farmers can better assess their crops.
 
-The Global Wheat Head Dataset is led by nine research institutes from seven countries: the University of Tokyo, Institut national de recherche pour l’agriculture, l’alimentation et l’environnement, Arvalis, ETHZ, University of Saskatchewan, University of Queensland, Nanjing Agricultural University, and Rothamsted Research. These institutions are joined by many in their pursuit of accurate wheat head detection, including the Global Institute for Food Security, DigitAg, Kubota, and Hiphen.
-
-In this competition, you’ll detect wheat heads from outdoor images of wheat plants, including wheat datasets from around the globe. Using worldwide data, you will focus on a generalized solution to estimate the number and size of wheat heads. To better gauge the performance for unseen genotypes, environments, and observational conditions, the training dataset covers multiple regions. You will use more than 3,000 images from Europe (France, UK, Switzerland) and North America (Canada). The test data includes about 1,000 images from Australia, Japan, and China.
-
-Wheat is a staple across the globe, which is why this competition must account for different growing conditions. Models developed for wheat phenotyping need to be able to generalize between environments. If successful, researchers can accurately estimate the density and size of wheat heads in different varieties. With improved detection farmers can better assess their crops, ultimately bringing cereal, toast, and other favorite dishes to your table.
+The goal of this Kaggle competition is to detect wheat ears from outdoor images of wheat plants from around the world. Using global data, a generalized solution will have to be found to estimate the number and size of wheat ears. To better assess the performance of genotypes, environments, and invisible viewing conditions, the training dataset covers multiple regions.
 
 ## Data
+
+The Global Wheat Head dataset is led by nine research institutes from seven countries: the University of Tokyo, the National Research Institute for Agriculture, Food and the Environment, Arvalis, ETHZ, the University of Saskatchewan, University of Queensland, Nanjing Agricultural University and Rothamsted Research. These institutions are joined by many in their quest to accurately detect wheat ears, including the World Food Security Institute, DigitAg, Kubota and Hiphen. Approximately 3000 images from Europe (France, United Kingdom, Switzerland) and North America (Canada) are used and the test data includes approximately 1000 images from Australia, Japan, and China.
+
+The data are images of wheat fields, with bounding boxes for each ear of wheat identified. All images do not include the ears of wheat. The images were recorded in many places around the world.
+CSV data is simple - image ID and image width and height are included. There is a line in train.csv for each bounding box. Not all images have bounding boxes.
+Most of the images in the test set are hidden. A small subset of test images has been included for writing code.
+
 More details on the data acquisition and processes are available at https://arxiv.org/abs/2005.02162
 
-**What should I expect the data format to be?**\
-The data is images of wheat fields, with bounding boxes for each identified wheat head. Not all images include wheat heads / bounding boxes. The images were recorded in many locations around the world.
-
-The CSV data is simple - the image ID matches up with the filename of a given image, and the width and height of the image are included, along with a bounding box (see below). There is a row in train.csv for each bounding box. Not all images have bounding boxes.
-Most of the test set images are hidden. A small subset of test images has been included for your use in writing code.
-
 **What am I predicting?**\
-You are attempting to predict bounding boxes around each wheat head in images that have them. If there are no wheat heads, you must predict no bounding boxes.
+You are attempting to predict bounding boxes around each wheat head in the pictures that contain them. If there are no ears of wheat, you must predict no bounding boxes.
 
 **Files**
 * train.csv - the training data
@@ -34,7 +32,6 @@ You are attempting to predict bounding boxes around each wheat head in images th
 * image_id - the unique image ID
 * width, height - the width and height of the images
 * bbox - a bounding box, formatted as a Python-style list of [xmin, ymin, width, height]
-* etc.
 
 ## Metrics
 This competition is evaluated on the mean average precision at different intersection over union (IoU) thresholds. The IoU of a set of predicted bounding boxes and ground truth bounding boxes is calculated as:
@@ -46,14 +43,16 @@ At each threshold value t, a precision value is calculated based on the number o
 
 A true positive is counted when a single predicted object matches a ground truth object with an IoU above the threshold. A false positive indicates a predicted object had no associated ground truth object. A false negative indicates a ground truth object had no associated predicted object.
 
-Important note: if there are no ground truth objects at all for a given image, ANY number of predictions (false positives) will result in the image receiving a score of zero, and being included in the mean average precision.
+If there are no ground truth objects at all for a given image, any number of predictions (false positives) will result in the image receiving a score of zero, and being included in the mean average precision.
+
 The average precision of a single image is calculated as the mean of the above precision values at each IoU threshold:
 <p align="center"><img src="ProjetDL_images/m3.png" /></p>
 
-In your submission, you are also asked to provide a confidence level for each bounding box. Bounding boxes will be evaluated in order of their confidence levels in the above process. This means that bounding boxes with higher confidence will be checked first for matches against solutions, which determines what boxes are considered true and false positives.
-Lastly, the score returned by the competition metric is the mean taken over the individual average precisions of each image in the test dataset.
+When submitting the contest, contributors are asked to provide a confidence level for each bounding box. Bounding boxes will be evaluated in the order of their confidence levels in the process above. This means that bounding boxes with higher confidence will be checked first for matches with solutions, which determines which boxes are considered true and false positives.
+Finally, the score returned by the competition metric is the average taken over the individual average accuracies of each image in the test dataset.
 
 **Intersection over Union (IoU)**\
+
 Intersection over Union is a measure of the magnitude of overlap between two bounding boxes (or, in the more general case, two objects). It calculates the size of the overlap between two objects, divided by the total area of the two objects combined.
 It can be visualized as the following:
 <p align="center"><img src="ProjetDL_images/m4.png" /></p>
